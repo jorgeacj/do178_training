@@ -60,9 +60,14 @@ __IO uint32_t BspButtonState = BUTTON_RELEASED;
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
+uint32_t defaultTaskBuffer[ 512 ];
+osStaticThreadDef_t defaultTaskControlBlock;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .cb_mem = &defaultTaskControlBlock,
+  .cb_size = sizeof(defaultTaskControlBlock),
+  .stack_mem = &defaultTaskBuffer[0],
+  .stack_size = sizeof(defaultTaskBuffer),
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for myTask02 */
@@ -75,7 +80,7 @@ const osThreadAttr_t myTask02_attributes = {
   .cb_size = sizeof(myTask02ControlBlock),
   .stack_mem = &myTask02Buffer[0],
   .stack_size = sizeof(myTask02Buffer),
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -198,7 +203,9 @@ Error_Handler();
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
 
+  /* USER CODE BEGIN BSP */
 
+  /* USER CODE END BSP */
 
   /* Start scheduler */
   osKernelStart();
@@ -333,7 +340,6 @@ void StartDefaultTask(void *argument)
 void StartTask02(void *argument)
 {
   /* USER CODE BEGIN StartTask02 */
-/* Initialize leds */
   BSP_LED_Init(LED_GREEN);
   BSP_LED_Init(LED_YELLOW);
   BSP_LED_Init(LED_RED);
@@ -351,27 +357,18 @@ void StartTask02(void *argument)
   {
 	Error_Handler();
   }
-
-  /* USER CODE BEGIN BSP */
-  /* -- Sample board code to send message over COM1 port ---- */
   printf("Welcome to STM32 world !\n\r");
-  /* -- Sample board code to switch on leds ---- */
-  BSP_LED_On(LED_GREEN);
-  BSP_LED_On(LED_YELLOW);
-  BSP_LED_On(LED_RED);
-  /* USER CODE END BSP */
+
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_1, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+
   /* Infinite loop */
   for(;;)
   {
-/* -- Sample board code for User push-button in interrupt mode ---- */
-
-	/* Update button state */
-	// BspButtonState = BUTTON_RELEASED;
-	/* -- Sample board code to toggle leds ---- */
 	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
 	HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_1);
 	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
-	/* ..... Perform your action ..... */
 	osDelay(100);
   }
   /* USER CODE END StartTask02 */
