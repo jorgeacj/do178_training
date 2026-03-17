@@ -1,5 +1,6 @@
-../Core/Src/main.c:99:5:main	16	static
-../Core/Src/main.c:197:13:MX_GPIO_Init	48	static
-../Core/Src/main.c:258:6:StartDefaultTask	16	static
-../Core/Src/main.c:276:6:StartTask02	16	static
-../Core/Src/main.c:291:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:106:5:main	16	static
+../Core/Src/main.c:204:6:MX_UART4_Init	8	static
+../Core/Src/main.c:252:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:313:6:StartDefaultTask	16	static
+../Core/Src/main.c:331:6:StartTask02	16	static
+../Core/Src/main.c:346:6:Error_Handler	4	static,ignoring_inline_asm
