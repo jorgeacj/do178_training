@@ -1,0 +1,2 @@
+../Core/Src/flap.c:38:6:flap_step	24	static
+../Core/Src/flap.c:142:6:flap_initialize	4	static

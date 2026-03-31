@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "pwm_servo.h"
+#include "flap.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -81,7 +82,7 @@ const osThreadAttr_t myTask02_attributes = {
   .cb_size = sizeof(myTask02ControlBlock),
   .stack_mem = &myTask02Buffer[0],
   .stack_size = sizeof(myTask02Buffer),
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -391,8 +392,23 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+
+  /*Configure GPIO pin : Btn1_Pin */
+  GPIO_InitStruct.Pin = Btn1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Btn1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD8 PD9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PA8 PA11 PA12 */
   GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_11|GPIO_PIN_12;
@@ -464,11 +480,27 @@ void StartTask02(void *argument)
 
 	Servo_SetAngle(&servo1, startAngle); //RIGAGEM
 
+	/* Initialize model */
+	flap_initialize();
+
+
+	rtU.Button=0.0;
+	rtU.FeedbackServo=startAngle;
+
 	/* Infinite loop */
 	for(;;)
 	{
-		  currentAngle = Servo_StepTowardAngle(&servo1, currentAngle, targetAngle,stepSize);
-		  osDelay(100);
+		if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_SET) {
+			rtU.Button=1.0;
+		}
+
+		currentAngle = Servo_StepTowardAngle(&servo1, rtU.FeedbackServo, rtY.angle,stepSize);
+
+		rtU.FeedbackServo=currentAngle;
+
+		/* Step the model */
+		flap_step();
+		osDelay(10);
 	}
   /* USER CODE END StartTask02 */
 }
