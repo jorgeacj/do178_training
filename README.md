@@ -361,23 +361,42 @@ but not mandatory.
 
 ## Annex C — MC/DC
 
-Modified Condition/Decision Coverage (MC/DC) is a testing metric ensuring that each atomic condition independently affects a decision's outcome, often used in safety-critical systems. It requires fewer tests than exhaustive testing (e.g., 
-) but more than decision coverage. For a minimal MC/DC set tests every condition’s independence.
+Modified Condition/Decision Coverage (MC/DC) is a testing metric ensuring
+that each atomic condition independently affects a decision's outcome. For a
+decision with three Boolean conditions, exhaustive testing would require
+`2^3 = 8` combinations; a minimal MC/DC set can be smaller while still showing
+each condition's independent effect.
 
-if (A && B) || C
+Example decision:
 
-1. Truth Table and Possible Cases
-Case	A	B	C	Result
-1	T	T	T	T
-2	T	T	F	T
-3	T	F	T	T
-4	T	F	F	F
-5	F	T	T	T
-6	F	T	F	F
-7	F	F	T	T
-8	F	F	F	F
+```c
+if ((A && B) || C)
+```
 
-MC/DC selection:
-F F F
-V F F
-F F V
+1. Truth table
+
+| Case | A | B | C | Result |
+| ---- | - | - | - | ------ |
+| 1    | F | F | F | F      |
+| 2    | F | F | T | T      |
+| 3    | F | T | F | F      |
+| 4    | F | T | T | T      |
+| 5    | T | F | F | F      |
+| 6    | T | F | T | T      |
+| 7    | T | T | F | T      |
+| 8    | T | T | T | T      |
+
+2. Minimal MC/DC test set
+
+| Test | A | B | C | Result | Independence shown |
+| ---- | - | - | - | ------ | ------------------ |
+| T1   | F | T | F | F      | A (with T2)        |
+| T2   | T | T | F | T      | A (with T1), B (with T3) |
+| T3   | T | F | F | F      | B (with T2), C (with T4) |
+| T4   | T | F | T | T      | C (with T3)        |
+
+Independence pairs:
+
+- `A`: compare `T1` and `T2` with `B = T`, `C = F`
+- `B`: compare `T2` and `T3` with `A = T`, `C = F`
+- `C`: compare `T3` and `T4` with `A = T`, `B = F`
