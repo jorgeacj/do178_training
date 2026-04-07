@@ -357,3 +357,27 @@ For DAL-A and DAL-B, DO-178B requires **independence** in verification,
 meaning the person who verifies (reviews, tests) the software must not be the
 same person who developed it. For DAL-C and below, independence is recommended
 but not mandatory.
+
+
+## Annex C — MC/DC
+
+Modified Condition/Decision Coverage (MC/DC) is a testing metric ensuring that each atomic condition independently affects a decision's outcome, often used in safety-critical systems. It requires fewer tests than exhaustive testing (e.g., 
+) but more than decision coverage. For a minimal MC/DC set tests every condition’s independence.
+
+if (A && B) || C
+
+1. Truth Table and Possible Cases
+Case	A	B	C	Result
+1	T	T	T	T
+2	T	T	F	T
+3	T	F	T	T
+4	T	F	F	F
+5	F	T	T	T
+6	F	T	F	F
+7	F	F	T	T
+8	F	F	F	F
+
+MC/DC selection:
+F F F
+V F F
+F F V
