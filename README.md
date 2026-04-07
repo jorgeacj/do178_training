@@ -21,18 +21,18 @@ This repository contains a project for training embedded software development in
 - [ ] Define traceability method (Req <> design <> code <> tests) + examples
  
 ### Coding rules / compliance constraints
-- [ ] Define coding standard (MISRA-oriented subset + project rules) + deviation process template
-- [ ] Enforce “no dynamic allocation after init” rule (malloc/free banned) + build check
-- [ ] Enforce “no HAL calls from application” (BSP wrapper-only access)
+- [X] Define coding standard (MISRA-oriented subset + project rules) + deviation process template
+- [X] Enforce “no dynamic allocation after init” rule (malloc/free banned) + build check
+- [X] Enforce “no HAL calls from application” (BSP wrapper-only access)
  
 ### BSP / platform framework (HAL/LL strategy)
 - [ ] Implement BSP wrappers: GPIO, timebase, timer, UART, CAN, watchdog, EXTI
 - [ ] Define and document ISR policy (minimal ISR, defer work, shared data rules)
-- [ ] Set up scheduler/superloop structure with fixed-rate tasks
+- [X] Set up scheduler/superloop structure with fixed-rate tasks
  
 ### Timing / determinism
 - [ ] Implement monotonic time base + overflow behavior
-- [ ] Implement periodic execution model (e.g., 1 ms tick + 10 ms control loop)
+- [X] Implement periodic execution model (e.g., 1 ms tick + 10 ms control loop)
 - [ ] Measure and document control-loop jitter / step pulse timing jitter (bounded jitter requirement)
  
 ### Stepper motor control (driver layer)
