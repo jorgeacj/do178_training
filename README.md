@@ -172,7 +172,7 @@ ARP-4761, not by the software development team. The process follows:
 | **HLR**                | High-Level Requirement                          | A requirement derived from system requirements, describing _what_       |
 | **HWCI**               | Hardware Configuration Item                     | Hardware counterpart of CSCI                                            |
 | **LLR**                | Low-Level Requirement                           | A requirement describing _how_ to implement an HLR; design-level        |
-| **MC/DC**              | Modified Condition / Decision Coverage          | Structural coverage metric required for DAL-A and DAL-B                 |
+| **MC/DC**              | Modified Condition / Decision Coverage          | Every condition within a compound decision independently affects the outcome                 |
 | **MISRA**              | Motor Industry Software Reliability Association | Organization that publishes C/C++ coding guidelines                     |
 | **OCD**                | Operational Concepts Document                   | Describes how the system is intended to be operated                     |
 | **PHAC**               | Plan for Hardware Aspects of Certification      | Hardware certification planning document                                |
