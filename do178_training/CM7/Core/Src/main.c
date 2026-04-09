@@ -466,7 +466,8 @@ void StartTask02(void *argument)
 	currentAngle = 0;
 	targetAngle = 120;  // target angle
 	stepSize = 2;      // Step size in degrees
-
+    Servo_Feedback_HandleTypeDef servoFb;  /* ADC feedback handle for servo position */
+	
 	Servo_HandleTypeDef servo1 = {
 	  .htim = &htim2,
 	  .channel = TIM_CHANNEL_1,
@@ -480,6 +481,22 @@ void StartTask02(void *argument)
 
 	Servo_SetAngle(&servo1, startAngle); //RIGAGEM
 
+
+  /* Initialise servo position feedback (ADC1 – PF11 / INP2) */
+  servoFb.hadc        = &hadc1;
+  servoFb.pollTimeout = SERVO_FB_POLL_TIMEOUT;
+  servoFb.adcMin      = SERVO_FB_ADC_MIN;
+  servoFb.adcMax      = SERVO_FB_ADC_MAX;
+  servoFb.minAngle    = SERVO_FB_ANGLE_MIN;
+  servoFb.maxAngle    = SERVO_FB_ANGLE_MAX;
+  servoFb.lastRaw     = 0U;
+  servoFb.lastAngle   = 0.0f;
+
+  if (Servo_Feedback_Init(&servoFb) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	
 	/* Initialize model */
 	flap_initialize();
 
@@ -496,7 +513,10 @@ void StartTask02(void *argument)
 
 		currentAngle = Servo_StepTowardAngle(&servo1, rtU.FeedbackServo, rtY.angle,stepSize);
 
-		rtU.FeedbackServo=currentAngle;
+		/* ---- ADC1 feedback read (PF11 / INP2) ---- */
+	    (void)Servo_Feedback_Read(&servoFb);
+		
+		rtU.FeedbackServo=servoFb.lastAngle;
 
 		/* Step the model */
 		flap_step();
