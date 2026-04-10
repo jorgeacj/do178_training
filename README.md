@@ -73,14 +73,16 @@ This repository contains a project for training embedded software development in
 - [x] Implement DIR/EN control and safe disable behavior
 - [x] Implement speed limiting and acceleration limiting support in driver/control boundary
 
-### Encoder integration (feedback)
+### Servo position feedback (FS90-FB analog potentiometer)
 
-- [x] Implement ADC-based position feedback for servo actuator (analog potentiometer)
-- [ ] Configure timer encoder mode for quadrature A/B
-- [ ] Implement signed position accumulator + rollover handling
-- [ ] Implement counts-to-engineering-units scaling
-- [ ] Implement encoder plausibility checks (max delta per cycle, direction consistency)
-- [ ] Implement encoder loss detection during commanded motion (timeout-based)
+- [x] Read analog feedback voltage from FS90-FB 4th wire via ADC1 (PF11 / INP2)
+- [x] Implement ADC calibration (offset, single-ended) and polling conversion
+- [x] Implement linear interpolation from raw 16-bit ADC count to angle (`Servo_ComputeAngle`)
+- [x] Define calibration endpoints (`adcMin` / `adcMax`) from empirical linear fit
+- [ ] Implement position-reached detection using feedback vs. commanded angle tolerance
+- [ ] Implement blocked/stall detection (feedback not changing while command active)
+- [ ] Implement feedback plausibility checks (rate-of-change limit, valid ADC range)
+- [ ] Implement feedback loss detection (ADC reading stuck at rail or out of calibrated range)
 
 ### Limit switches + homing
 
