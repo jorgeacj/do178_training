@@ -158,6 +158,7 @@ ARP-4761, not by the software development team. The process follows:
 
 | Acronym / Abbreviation | Full Form                                       | Context                                                                 |
 | ---------------------- | ----------------------------------------------- | ----------------------------------------------------------------------- |
+| **ADC**                | Analog-to-Digital Converter                     | Peripheral used for servo position feedback (analog voltage → digital)  |
 | **API**                | Application Programming Interface               | The set of public functions exposed by a module                         |
 | **ARP**                | Aerospace Recommended Practice                  | SAE standard designation (e.g., ARP-4754A, ARP-4761)                    |
 | **ASIL**               | Automotive Safety Integrity Level               | ISO 26262 safety level (A–D); automotive equivalent of DAL              |
@@ -265,11 +266,12 @@ tags embedded in the source code.
 
 ### B.3 Requirements Hierarchy
 
-| Level                            | What It Describes           | Example from This Module                            |
-| -------------------------------- | --------------------------- | --------------------------------------------------- |
-| **System Requirement**           | What the _system_ must do   | "The system shall control a servo actuator via PWM" |
-| **High-Level Requirement (HLR)** | What the _software_ must do | SRS-PWM-000: "PWM Servo Module Specification"       |
-| **Low-Level Requirement (LLR)**  | _How_ the software does it  | LLR-PWM-022: "Clamp the input angle to [0, 180]"    |
+| Level                            | What It Describes           | Example from This Module                                          |
+| -------------------------------- | --------------------------- | ----------------------------------------------------------------- |
+| **System Requirement**           | What the _system_ must do   | "The system shall control a servo actuator via PWM"               |
+| **High-Level Requirement (HLR)** | What the _software_ must do | SRS-PWM-000: "PWM Servo Module Specification"                     |
+| **Low-Level Requirement (LLR)**  | _How_ the software does it  | LLR-PWM-022: "Clamp the input angle to [0, 180]"                  |
+| **Low-Level Requirement (LLR)**  | _How_ the software does it  | LLR-PWM-082: "Linearly interpolate ADC reading to angle [deg]"    |
 
 HLRs are written in the **SRS**. LLRs are written in the **SDD** (this
 document) and/or directly in the source code via `@req` tags.
