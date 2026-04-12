@@ -1,6 +1,15 @@
-﻿# do178_training
+# do178_training
 
 This repository contains a project for training embedded software development in comply with DO178C.
+
+### Document Index
+
+| Document | Description |
+| -------- | ----------- |
+| [SERVO_PWM.md](SERVO_PWM.md) | Software Design Document — PWM Servo Control Module (SDD-CM7-PWM-001) |
+| [PWM_ADC_EXPLAINED.md](PWM_ADC_EXPLAINED.md) | Technical explanation of PWM output, ADC feedback, and calibration procedure |
+
+---
 
 ## 1. Roadmap
 
@@ -22,9 +31,9 @@ This repository contains a project for training embedded software development in
 - [x] Create requirements set with IDs for servo/flap module (LLR-PWM-001 … LLR-PWM-083)
 - [ ] Create requirements set with IDs (motor, encoder, homing, safety, comms, timing, constraints)
 - [ ] Select capstone requirement subset (25 reqs) for full traceability
-- [x] Create Software Design Document for PWM Servo module (`SERVO_PWM.md`, SDD-CM7-PWM-001)
+- [x] Create Software Design Document for PWM Servo module ([SERVO_PWM.md](SERVO_PWM.md), SDD-CM7-PWM-001)
 - [ ] Create architecture document (modules, interfaces, task rates, ISR rules, data ownership)
-- [x] Define traceability method (Req <> design <> code <> tests) + examples in `SERVO_PWM.md` §5
+- [x] Define traceability method (Req <> design <> code <> tests) + examples in [SERVO_PWM.md §5](SERVO_PWM.md#5-traceability-matrix)
 
 ### Coding rules / compliance constraints
 
@@ -55,7 +64,7 @@ This repository contains a project for training embedded software development in
 - [x] Define calibration constants for 16-bit ADC ↔ 0–180° mapping (linear fit)
 - [x] Implement MISRA-compliant input clamping and NULL-pointer guards on all API functions
 - [x] Implement pulse-width saturation to timer period (derived requirement)
-- [ ] Write SDD for ADC feedback calibration procedure (how to derive `adcMin` / `adcMax`)
+- [x] Write SDD for ADC feedback calibration procedure (how to derive `adcMin` / `adcMax`) — see [PWM_ADC_EXPLAINED.md](PWM_ADC_EXPLAINED.md)
 - [ ] Implement closed-loop position control using ADC feedback (PID or bang-bang in servo layer)
 
 ### Model-based design (Simulink code generation)
@@ -313,8 +322,8 @@ tags embedded in the source code.
 | **Low-Level Requirement (LLR)**  | _How_ the software does it  | LLR-PWM-022: "Clamp the input angle to [0, 180]"               |
 | **Low-Level Requirement (LLR)**  | _How_ the software does it  | LLR-PWM-082: "Linearly interpolate ADC reading to angle [deg]" |
 
-HLRs are written in the **SRS**. LLRs are written in the **SDD** (this
-document) and/or directly in the source code via `@req` tags.
+HLRs are written in the **SRS**. LLRs are written in the **SDD**
+([SERVO_PWM.md](SERVO_PWM.md)) and/or directly in the source code via `@req` tags.
 
 ### B.4 Structural Coverage
 
