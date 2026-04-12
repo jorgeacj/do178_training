@@ -297,11 +297,11 @@ The complete closed-loop data path in the 10 ms servo task:
 │  2. Step toward model output angle:                             │
 │        currentAngle = Servo_StepTowardAngle(servo, feedback,    │
 │                                             rtY.angle, 2)       │
-│        └─► Servo_SetAngle() → TIM2 CCR1 → PA0 PWM              │
+│        └─► Servo_SetAngle() → TIM2 CCR1 → PA0 PWM               │
 │                                                                 │
 │  3. Read ADC feedback:                                          │
 │        Servo_Feedback_Read(&servoFb)                            │
-│        └─► HAL_ADC_Start → Poll → GetValue → ComputeAngle      │
+│        └─► HAL_ADC_Start → Poll → GetValue → ComputeAngle       │
 │        └─► servoFb.lastAngle (measured angle)                   │
 │                                                                 │
 │  4. Feed measured angle back to Simulink model:                 │
@@ -310,7 +310,7 @@ The complete closed-loop data path in the 10 ms servo task:
 │  5. Step the Simulink model:                                    │
 │        flap_step()   → produces rtY.angle for next iteration    │
 │                                                                 │
-│  6. osDelay(10)  ← 10 ms period                                │
+│  6. osDelay(10)  ← 10 ms period                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -322,8 +322,8 @@ The complete closed-loop data path in the 10 ms servo task:
 | -------------------- | -------- | ------- | -------------------------------------- |
 | `SERVO_MIN_PULSE`    | 530      | µs      | PWM pulse width at 0°                  |
 | `SERVO_MAX_PULSE`    | 2400     | µs      | PWM pulse width at 180°                |
-| `SERVO_FB_ADC_MIN`   | 2 435    | counts  | 16-bit ADC reading at 0° (≈ 0.12 V)   |
-| `SERVO_FB_ADC_MAX`   | 57 996   | counts  | 16-bit ADC reading at 180° (≈ 2.92 V) |
+| `SERVO_FB_ADC_MIN`   | 2 435    | counts  | 16-bit ADC reading at 0° (≈ 0.12 V)    |
+| `SERVO_FB_ADC_MAX`   | 57 996   | counts  | 16-bit ADC reading at 180° (≈ 2.92 V)  |
 | `SERVO_FB_ANGLE_MIN` | 0.0      | degrees | Angle at minimum ADC count             |
 | `SERVO_FB_ANGLE_MAX` | 180.0    | degrees | Angle at maximum ADC count             |
 | `SERVO_FB_POLL_TIMEOUT` | 10    | ms      | ADC poll timeout per conversion        |
@@ -345,10 +345,3 @@ If you replace the servo or need to re-calibrate:
 5. Rebuild and re-test.
 
 ---
-
-## References
-
-- [SERVO_PWM.md](SERVO_PWM.md) — Software Design Document (SDD-CM7-PWM-001)
-- [pwm_servo.h](do178_training/CM7/Core/Inc/pwm_servo.h) — Public API header
-- [pwm_servo.c](do178_training/CM7/Core/Src/pwm_servo.c) — Implementation
-- [main.c](do178_training/CM7/Core/Src/main.c) — Task integration and handle initialization
